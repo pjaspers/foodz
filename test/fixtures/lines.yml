@@ -1,0 +1,10 @@
+# Read about fixtures at
+# http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+mexicano_line:
+  food: mexicano
+  order: mexicano_and_curryrol
+
+curryrol_line:
+  food: curryrol
+  order: mexicano_and_curryrol

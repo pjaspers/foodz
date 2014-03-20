@@ -1,0 +1,14 @@
+# Read about fixtures at
+# http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+mexicano:
+  delivery: a_la_minute
+  name: "Smos Mexicano"
+  price: 289
+  ingredients: lettuce, mexicano, tomato
+  categories: hot, buns
+
+curryrol:
+  delivery: a_la_minute
+  name: "Curryrol"
+  price: 123
