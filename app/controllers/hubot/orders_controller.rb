@@ -1,4 +1,6 @@
 class Hubot::OrdersController < ApplicationController
+  before_filter :ensure_json
+  protect_from_forgery with: :null_session
 
   def index
     # ISO 8601 format: YYYY-MM-DD
@@ -24,6 +26,10 @@ class Hubot::OrdersController < ApplicationController
 
   protected
 
+  def ensure_json
+    request.format = :json
+  end
+
   def ordered_on
     return unless params[:ordered_on]
     return Date.today.strftime("%Y-%m-%d")
@@ -44,8 +50,8 @@ class Hubot::OrdersController < ApplicationController
   end
 
   def order_params
-    params.require(:username)
-    params.permit(:delete, :metadata, :username, :metadata)
+    params.require("username")
+    params.permit("delete", "metadata", "username", :metadata)
   end
 
 end
