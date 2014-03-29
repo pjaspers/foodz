@@ -2,10 +2,7 @@ source 'https://rubygems.org'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.0.4'
-
-# Use sqlite3 as the database for Active Record
-gem 'sqlite3'
-
+gem 'pg', '~> 0.17.1'
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 4.0.2'
 
@@ -35,6 +32,8 @@ group :development, :test do
   gem 'mocha', '~> 0.13.2', :require => false
   gem 'minitest-rails', '~> 0.9.2'
   gem 'database_cleaner'
+  # Use sqlite3 as the database for Active Record
+  gem 'sqlite3'
 end
 
 group :doc do
