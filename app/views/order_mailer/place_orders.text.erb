@@ -1,0 +1,18 @@
+Bestelling voor 10to1
+
+---------------------
+
+Leveradres: Prins Boudewijnlaan 5, 2550 Kontich
+
+-----------------------------------------------
+
+<% max_length = @orders.pluck(:username).compact.max_by(&:length).length %>
+<% @orders.each_with_index do |order, index| %>
+  <%= index +1%>. <%= (order.username || "").ljust(max_length) %>: <%= order.metadata %>
+<% end %>
+
+<% if @orders.empty? %>
+  Vandaag hebben wij geen broodjes nodig.
+<% end %>
+
+-----------------------------------------------
