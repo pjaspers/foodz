@@ -24,6 +24,12 @@ class Hubot::OrdersController < ApplicationController
     end
   end
 
+  def mail
+    fake_delivery = Struct.new(:email).new("piet@10to1.be")
+    OrderMailer.place_orders(Order.today, fake_delivery).deliver
+    render json: "Mail sent"
+  end
+
   protected
 
   def ensure_json

@@ -176,7 +176,7 @@
                                         <p class="article-title">Vandaag hebben wij geen broodjes nodig.</p>
                                       <% else %>
                                         <ol>
-                                          <% max_length = @orders.pluck(:username).compact.max_by(&:length).length %>
+                                          <% max_length = (@orders.pluck(:username).compact.max_by(&:length) || "").length %>
                                           <% @orders.each do |order| %>
                                             <li>
                                               <strong class="article-title"><%= (order.username || "").ljust(max_length) %>:</strong> <%= order.metadata %>
