@@ -39,6 +39,7 @@ group :development, :test do
   gem 'database_cleaner'
   # Use sqlite3 as the database for Active Record
   gem 'sqlite3'
+  gem 'dotenv-rails', '~> 0.10.0'
 end
 
 group :doc do

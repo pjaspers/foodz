@@ -19,3 +19,4 @@
 vendor/ruby
 .powenv
 .ruby-version
+.env

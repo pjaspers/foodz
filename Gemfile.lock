@@ -50,6 +50,9 @@ GEM
       railties (>= 3.2.6, < 5)
       thread_safe (~> 0.1)
       warden (~> 1.2.3)
+    dotenv (0.10.0)
+    dotenv-rails (0.10.0)
+      dotenv (= 0.10.0)
     erubis (2.7.0)
     execjs (2.0.2)
     hike (1.2.3)
@@ -162,6 +165,7 @@ DEPENDENCIES
   coffee-rails (~> 4.0.0)
   database_cleaner
   devise (~> 3.2.4)
+  dotenv-rails (~> 0.10.0)
   jbuilder (~> 1.2)
   jquery-rails
   mail_view (~> 2.0.4)
