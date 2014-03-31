@@ -13,6 +13,9 @@
 
 ActiveRecord::Schema.define(version: 20140320215007) do
 
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
+
   create_table "categories", force: true do |t|
     t.string   "name"
     t.datetime "created_at"
@@ -24,8 +27,8 @@ ActiveRecord::Schema.define(version: 20140320215007) do
     t.integer "food_id"
   end
 
-  add_index "categories_food", ["food_id", "category_id"], name: "index_categories_food_on_food_id_and_category_id"
-  add_index "categories_food", ["food_id"], name: "index_categories_food_on_food_id"
+  add_index "categories_food", ["food_id", "category_id"], name: "index_categories_food_on_food_id_and_category_id", using: :btree
+  add_index "categories_food", ["food_id"], name: "index_categories_food_on_food_id", using: :btree
 
   create_table "deliveries", force: true do |t|
     t.string   "name"
@@ -49,8 +52,8 @@ ActiveRecord::Schema.define(version: 20140320215007) do
     t.integer "food_id"
   end
 
-  add_index "food_ingredients", ["food_id", "ingredient_id"], name: "index_food_ingredients_on_food_id_and_ingredient_id"
-  add_index "food_ingredients", ["food_id"], name: "index_food_ingredients_on_food_id"
+  add_index "food_ingredients", ["food_id", "ingredient_id"], name: "index_food_ingredients_on_food_id_and_ingredient_id", using: :btree
+  add_index "food_ingredients", ["food_id"], name: "index_food_ingredients_on_food_id", using: :btree
 
   create_table "ingredients", force: true do |t|
     t.string   "name"

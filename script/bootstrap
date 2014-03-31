@@ -1,0 +1,188 @@
+#! /usr/bin/ruby
+# coding: utf-8
+require "rubygems"
+require "yaml"
+
+begin
+  require 'thor/group'
+rescue LoadError
+  puts "Thor is missing, bundle install?"
+  exit
+end
+
+class Bootstrap < Thor::Group
+  include Thor::Actions
+
+  def display(msg, color = :green)
+    say(" - #{msg}", color)
+  end
+
+  def run_silently(command)
+    run(command, :capture => true)
+  end
+
+  def run_mysql(cmd)
+    user = ENV["MYSQL_USER"] || "root"
+    mysql_base = "mysql -u #{user} -p -e"
+
+    run_silently("#{mysql_base} \"#{cmd}\"")
+  end
+
+  def command?(name)
+    `which #{name}`
+    $?.success?
+  end
+
+  def db_config
+    config_path = File.join(File.dirname(__FILE__) , ".."  , 'config' , "database.yml")
+    @db_config ||= YAML.load_file(config_path)
+  end
+
+  def setup_databases_from_config
+    ["development", "test"].each do |environment|
+      next unless db_config[environment]
+
+      prefix = db_adapters_prefix(db_config[environment]["adapter"])
+      raise "Adapter not yet implemented" unless prefix
+
+      if database = db_config[environment]["database"]
+        send("#{prefix}_create_db", database)
+      end
+      if username = db_config[environment]["username"]
+        send("#{prefix}_create_user", username)
+      end
+      if username && database
+        send("#{prefix}_fix_permissions", username, database)
+      end
+    end
+  end
+
+  # Prefix returned here is used to make methods for the db
+  # see `pg_create_db` etc.
+  #
+  # adapter_name - Name of the adapter
+  #
+  # Returns a string or nil
+  def db_adapters_prefix(adapter_name)
+    {
+      "postgresql" => "pg",
+      "postgres" => "pg",
+      "mysql2" => "mysql",
+      "mysql" => "mysql",
+      "sqlite3" => "sqlite",
+    }.fetch(adapter_name)
+  end
+
+  # Will create the database in Postgres
+  #
+  # database_name - Name of the db
+  #
+  # Returns nothing
+  def pg_create_db(database_name)
+    display("Creating database: #{database_name}")
+    run "createdb #{database_name}"
+  end
+
+  # Will create a super user in Postgres
+  #
+  # username - Name of the user to create
+  #
+  # Returns nothing
+  def pg_create_user(username)
+    display("Creating user: #{username}")
+    run_silently "createuser -S -D -R -e #{username}"
+  end
+
+  def mysql_create_db(database_name)
+    display("Creating database: #{database_name}")
+    run_mysql("CREATE DATABASE #{database_name};")
+  end
+
+  def sqlite_create_user(username); end;
+  def sqlite_create_db(username); end;
+  def sqlite_fix_permissions(username, databases); end;
+  def pg_fix_permissions(username, databases); end;
+
+  def mysql_create_user(username)
+    display("Creating user: #{username}")
+    run_mysql("CREATE USER '#{username}'@'localhost' IDENTIFIED BY '#{username}';")
+  end
+
+  def mysql_fix_permissions(username, database)
+    display("Granting permissions to #{username} on #{database}")
+    run_mysql("GRANT ALL PRIVILEGES ON #{database}.* TO '#{username}'@localhost IDENTIFIED BY '#{username}';")
+  end
+
+  def imagemagick
+    caveats = <<CAVEATS
+
+Some caveats on Lion, you might need to rebuild your imagemagick
+against the new version with gs. This can be done with:
+
+brew install imagemagick
+
+This causes the currently rmagick to be invalid, so it has to be
+rebuild as well, this can be done with:
+
+gem pristine rmagick.
+
+If you encounter any errors with `libtiff`, like:
+
+file not found: /usr/local/lib/libtiff.3.dylib for architecture x86_64
+
+http://dmitry.koprov.ru/2012/06/01/rmagick-libtiff-conflict.html might
+help. (Run `brew switch libtiff 3.9.5` and after installing rmagick switch
+back.)
+CAVEATS
+    unless command?("convert")
+      text = <<MAGICK
+ImageMagick needs to be installed to enable PDF support, to install it:
+
+brew install imagemagick
+MAGICK
+      puts text
+      puts caveats
+      exit(0)
+    end
+  end
+
+  def ghostscript
+    unless command?("gs")
+      text = <<GHOST
+GhostScript needs to be installed to enable PDF support, to install it:
+
+brew install gs
+GHOST
+      puts text
+      puts caveats
+      exit(0)
+    end
+  end
+
+  def strap!
+    say("Hi, let's get you started", :green)
+    display("Checking dependencies")
+
+    display("installing bundle")
+    run_silently "bundle install"
+
+    setup_databases_from_config
+
+    display("Migrating")
+    run_silently "bundle exec rake db:migrate"
+
+    display("Running tests")
+    run "bundle exec rake test"
+
+    done_text = <<-INFO
+⤷ Done. Goodbye
+INFO
+    say(done_text, :blue)
+  end
+
+  def self.strap_it!
+    new.strap!
+  end
+end
+
+Bootstrap.strap_it!
