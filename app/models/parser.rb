@@ -38,14 +38,13 @@ class Parser
   end
 
   def find_food(word)
-    # Food.select("*, levenshtein(name, '#{s}') as LVH").where(f[:name].matches("%#{s}%")).order("LVH ASC").collect(&:name)
     like = Food.arel_table[:name].matches("%#{word}%")
     food = Food.where(like)
-    if food.count == 0
-      # food = Food.select("*, levenshtein(name, '#{word}') as LVH").order("LVH ASC").limit(1)
-      food = food.where("levenshtein(name, '#{word}') < 10")
-    # elsif food.count > 1
-    #   food = food.where("levenshtein(name, '#{word}') < 10")
+    if food.count == 0 # Fuzzy matching
+      food = Food.where("name % '#{word}'")
+    end
+    if food.count > 1
+      food = Food.select("*, levenshtein(name, '#{word}') as LVH").where(like).order("LVH ASC").limit(1)
     end
     food.to_a
   end

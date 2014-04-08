@@ -180,6 +180,11 @@
                                           <% @orders.each do |order| %>
                                             <li>
                                               <strong class="article-title"><%= (order.username || "").ljust(max_length) %>:</strong> <%= order.metadata %>
+                                              <p>
+                                                <% Parser.new.parse(order.metadata).each do |k, v| %>
+                                                  <span><%= k %>: <%= (v || []).map(&:name).join(" | ") %></span>
+                                                <% end %>
+                                              </p>
                                             </li>
                                           <% end %>
                                         </ol>
