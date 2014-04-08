@@ -40,6 +40,7 @@ group :development, :test do
   # Use sqlite3 as the database for Active Record
   gem 'sqlite3'
   gem 'dotenv-rails', '~> 0.10.0'
+  gem 'pry-rails', '~> 0.3.2'
 end
 
 group :doc do
