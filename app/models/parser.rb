@@ -17,14 +17,37 @@ class Parser
     lines = tokenize(text)
     result = {}
     lines.each do |line|
+      line.gsub!(/[^0-9a-zA-Z ]/, "")
+      line.downcase!
+      line.strip!
       result[line] = []
-      line.split(" ").each do |word|
-        if foods = scan_for_food_items(word)
-          result[line] = foods
-        end
+      words = line.split(" ")
+      words.reject!{|w| ["de", "het", "een"].include?(w)}
+      words.reject!{|w| ["met", "zonder"].include?(w)}
+      words.reject!{|w| ["andalouse", "samurai", "cocktailsaus", "mayo", "ketchup"].include?(w)}
+      words.reject!{|w| ["brood", "broodje", "smos"].include?(w)}
+      words.reject!{|w| ["klein", "midden", "grote", "kleine", "grote"].include?(w)}
+      words.reject!{|w| ["fitness", "fitnes", "grote", "kleine", "grote"].include?(w)}
+      r = []
+      words.each do |word|
+        r << find_food(word)
       end
+      result[line] = r.compact.reject(&:empty?).inject(:&)
     end
     result
+  end
+
+  def find_food(word)
+    # Food.select("*, levenshtein(name, '#{s}') as LVH").where(f[:name].matches("%#{s}%")).order("LVH ASC").collect(&:name)
+    like = Food.arel_table[:name].matches("%#{word}%")
+    food = Food.where(like)
+    if food.count == 0
+      # food = Food.select("*, levenshtein(name, '#{word}') as LVH").order("LVH ASC").limit(1)
+      food = food.where("levenshtein(name, '#{word}') < 10")
+    # elsif food.count > 1
+    #   food = food.where("levenshtein(name, '#{word}') < 10")
+    end
+    food.to_a
   end
 
   def tokenize(text)
