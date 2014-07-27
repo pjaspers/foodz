@@ -13,10 +13,8 @@ class Hubot::OrdersController < ApplicationController
   end
 
   def create
-    return render json: "No username found" unless order_params[:username]
-
     if order_params[:delete] && order_params[:delete] == "X"
-      delete_order_with_username
+      delete_order
       render json: "Deleted"
     else
       order = create_order_with_username_metadata(order_params[:username], order_params[:metadata])
@@ -49,6 +47,18 @@ class Hubot::OrdersController < ApplicationController
     order.save
   end
 
+  def delete_order
+    if params[:all_users] && params[:all_users] == "X"
+      delete_all_orders_for_today
+    elsif params[:username]
+      delete_order_with_username
+    end
+  end
+
+  def delete_all_orders_for_today
+    Order.today.destroy_all
+  end
+
   def delete_order_with_username
     if order = Order.today.find_by(username: order_params[:username])
       order.destroy
@@ -56,8 +66,7 @@ class Hubot::OrdersController < ApplicationController
   end
 
   def order_params
-    params.require("username")
-    params.permit("delete", "metadata", "username", :metadata)
+    params.permit("delete", "metadata", "username", :metadata, :all_users)
   end
 
 end
