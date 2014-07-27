@@ -35,8 +35,7 @@ class Hubot::OrdersController < ApplicationController
   end
 
   def ordered_on
-    return unless params[:ordered_on]
-    return Date.today.strftime("%Y-%m-%d")
+    return Date.today.strftime("%Y-%m-%d") unless params[:ordered_on]
 
     Date.strptime(params[:ordered_on], '%Y-%m-%d') rescue nil
   end
