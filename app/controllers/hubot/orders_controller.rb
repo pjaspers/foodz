@@ -23,7 +23,7 @@ class Hubot::OrdersController < ApplicationController
   end
 
   def mail
-    fake_delivery = Struct.new(:email).new("piet@10to1.be")
+    fake_delivery = Struct.new(:email).new(["piet@10to1.be", "bob@10to1.be", "sarahoefkens@hotmail.com"])
     OrderMailer.place_orders(Order.today, fake_delivery).deliver
     render json: "Mail sent"
   end
