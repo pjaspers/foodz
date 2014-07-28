@@ -13,13 +13,20 @@ class Hubot::OrdersControllerTest < ActionController::TestCase
     assert 1, JSON.parse(response.body).length
   end
 
-  it "has special case to get today's orders" do
+  it "returns orders for today by default" do
     order = orders(:mexicano_and_curryrol)
     date_string = Date.today.strftime("%Y-%m-%d")
     Order.expects(:ordered_on).with(date_string).returns([order])
-    response = get :index, ordered_on: :today
+    response = get :index
 
     assert_equal 1, JSON.parse(response.body).length
+  end
+
+  it "returns orders all orders for non-date params" do
+    Order.expects(:ordered_on).never
+    response = get :index, ordered_on: "all"
+
+    assert_equal 2, JSON.parse(response.body).length
   end
 
   it "creates an order from simple data" do
