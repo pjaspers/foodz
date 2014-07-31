@@ -46,12 +46,13 @@ class Hubot::OrdersControllerTest < ActionController::TestCase
     assert_response :success
   end
 
+
   it "sends an email when sent a post request" do
     assert_difference 'ActionMailer::Base.deliveries.size', +1 do
       post :mail
     end
     order_email = ActionMailer::Base.deliveries.last
 
-    assert_equal 'piet@10to1.be', order_email.to[0]
+    assert_equal %w(bob@franz.be franz@bob.be), order_email.to
   end
 end

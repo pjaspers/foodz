@@ -2,13 +2,10 @@ source 'https://rubygems.org'
 ruby "2.0.0"
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '4.0.4'
+gem 'rails', '~> 4.1.4'
 gem 'pg', '~> 0.17.1'
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 4.0.2'
-# Run Rails the 12factor way
-# [rails_12factor](https://github.com/heroku/rails_12factor)
-gem 'rails_12factor', '~> 0.0.2'
 # Use Uglifier as compressor for JavaScript assets
 gem 'uglifier', '>= 1.3.0'
 
@@ -32,15 +29,22 @@ gem 'unicorn', '~> 4.8.2'
 gem 'mail_view', '~> 2.0.4'
 
 group :development, :test do
+  gem 'spring', '~> 1.1.3'
   gem 'capybara', '~> 2.2.1'
   gem 'poltergeist', '~> 1.5.0'
   gem 'mocha', '~> 0.13.2', :require => false
-  gem 'minitest-rails', '~> 0.9.2'
+  gem 'minitest-rails', '~> 2.1.0'
   gem 'database_cleaner'
   # Use sqlite3 as the database for Active Record
   gem 'sqlite3'
   gem 'dotenv-rails', '~> 0.10.0'
   gem 'pry-rails', '~> 0.3.2'
+end
+
+group :production do
+  # Run Rails the 12factor way
+  # [rails_12factor](https://github.com/heroku/rails_12factor)
+  gem 'rails_12factor', '~> 0.0.2'
 end
 
 group :doc do
