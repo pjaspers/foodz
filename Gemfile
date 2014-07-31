@@ -6,9 +6,6 @@ gem 'rails', '~> 4.1.4'
 gem 'pg', '~> 0.17.1'
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 4.0.2'
-# Run Rails the 12factor way
-# [rails_12factor](https://github.com/heroku/rails_12factor)
-gem 'rails_12factor', '~> 0.0.2'
 # Use Uglifier as compressor for JavaScript assets
 gem 'uglifier', '>= 1.3.0'
 
@@ -42,6 +39,12 @@ group :development, :test do
   gem 'sqlite3'
   gem 'dotenv-rails', '~> 0.10.0'
   gem 'pry-rails', '~> 0.3.2'
+end
+
+group :production do
+  # Run Rails the 12factor way
+  # [rails_12factor](https://github.com/heroku/rails_12factor)
+  gem 'rails_12factor', '~> 0.0.2'
 end
 
 group :doc do
