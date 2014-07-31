@@ -23,12 +23,16 @@ class Hubot::OrdersController < ApplicationController
   end
 
   def mail
-    fake_delivery = Struct.new(:email).new(["piet@10to1.be", "bob@10to1.be", "sarahoefkens@hotmail.com"])
+    fake_delivery = Struct.new(:email).new(fake_emails)
     OrderMailer.place_orders(Order.today, fake_delivery).deliver
     render json: "Mail sent"
   end
 
   protected
+
+  def fake_emails
+    Rails.application.secrets.fake_delivery_emails.split(",").collect(&:strip)
+  end
 
   def ensure_json
     request.format = :json
