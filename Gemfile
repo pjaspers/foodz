@@ -2,7 +2,7 @@ source 'https://rubygems.org'
 ruby "2.0.0"
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '4.0.4'
+gem 'rails', '~> 4.1.4'
 gem 'pg', '~> 0.17.1'
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 4.0.2'
@@ -35,7 +35,7 @@ group :development, :test do
   gem 'capybara', '~> 2.2.1'
   gem 'poltergeist', '~> 1.5.0'
   gem 'mocha', '~> 0.13.2', :require => false
-  gem 'minitest-rails', '~> 0.9.2'
+  gem 'minitest-rails', '~> 2.1.0'
   gem 'database_cleaner'
   # Use sqlite3 as the database for Active Record
   gem 'sqlite3'
