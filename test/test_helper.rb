@@ -4,6 +4,8 @@ require "rails/test_help"
 require "minitest/rails"
 require "mocha/setup"
 
+Rails.logger.level = 4
+
 # To add Capybara feature tests add `gem "minitest-rails-capybara"`
 # to the test group in the Gemfile and uncomment the following:
 # require "minitest/rails/capybara"
