@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/pjaspers/foodz.svg?branch=master)](https://travis-ci.org/pjaspers/foodz)
+
 == README
 
 ## Needed database extensions
