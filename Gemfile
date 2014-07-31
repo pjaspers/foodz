@@ -32,6 +32,7 @@ gem 'unicorn', '~> 4.8.2'
 gem 'mail_view', '~> 2.0.4'
 
 group :development, :test do
+  gem 'spring', '~> 1.1.3'
   gem 'capybara', '~> 2.2.1'
   gem 'poltergeist', '~> 1.5.0'
   gem 'mocha', '~> 0.13.2', :require => false
