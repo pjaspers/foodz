@@ -33,8 +33,16 @@ class OrderTest < ActiveSupport::TestCase
       o2 = Order.create({"metadata"=>"ne midden fitness dalton", "created_at"=>"2014-11-04T08:22:15Z", "username"=>"Piet Jaspers"})
       assert Order.ordered_since(Date.new(2011, 11, 04)).include? o1
       assert Order.ordered_since(Date.new(2011, 11, 04)).include? o2
-
     end
 
+  end
+
+  describe "sandiches users" do
+    it "are found based on the recent orders and placed orders" do
+      Order.expects(:active_usernames).returns(["soffe", "atog", "pjaspers"])
+      Order.expects(:ordered_usernames).returns(["soffe"])
+
+      assert_equal ["atog", "pjaspers"], Order.sandwichless_usernames
+    end
   end
 end
