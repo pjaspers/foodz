@@ -32,7 +32,7 @@ group :development, :test do
   gem 'spring', '~> 1.1.3'
   gem 'capybara', '~> 2.2.1'
   gem 'poltergeist', '~> 1.5.0'
-  gem 'mocha', '~> 0.13.2', :require => false
+  gem 'mocha', '~> 1.1.0', :require => false
   gem 'minitest-rails', '~> 2.1.0'
   gem 'database_cleaner'
   # Use sqlite3 as the database for Active Record
