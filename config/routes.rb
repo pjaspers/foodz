@@ -4,6 +4,9 @@ Foodz::Application.routes.draw do
       post 'mail', on: :collection
     end
     resources :food
+    resources :users, only: [] do
+      get :sandwichless, on: :collection
+    end
   end
 
   # config/routes.rb
