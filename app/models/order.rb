@@ -5,4 +5,6 @@ class Order < ActiveRecord::Base
 
   scope :today, -> { ordered_on(Date.today.strftime("%Y-%m-%d")) }
 
+  scope :ordered_since, -> (date) { where("created_at >= ?", date.to_time.beginning_of_day) }
+
 end

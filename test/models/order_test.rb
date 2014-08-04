@@ -28,5 +28,13 @@ class OrderTest < ActiveSupport::TestCase
       Order.today
     end
 
+    it "finds all orders since a date" do
+      o1 = Order.create({"metadata"=>"ne midden fitness dalton", "created_at"=>"2011-11-04T08:22:15Z", "username"=>"Piet Jaspers"})
+      o2 = Order.create({"metadata"=>"ne midden fitness dalton", "created_at"=>"2014-11-04T08:22:15Z", "username"=>"Piet Jaspers"})
+      assert Order.ordered_since(Date.new(2011, 11, 04)).include? o1
+      assert Order.ordered_since(Date.new(2011, 11, 04)).include? o2
+
+    end
+
   end
 end
