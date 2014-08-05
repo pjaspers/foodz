@@ -1,5 +1,5 @@
 class Hubot::UsersController < ApplicationController
   def sandwichless
-    render json: Order.sandwichless_usernames.to_json
+    render json: User.users_without_orders.to_json
   end
 end
