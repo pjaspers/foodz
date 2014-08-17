@@ -64,7 +64,7 @@ class Hubot::OrdersController < ApplicationController
   end
 
   def delete_order_with_username
-    if order = Order.today.find_by(username: order_params[:username])
+    if order = Order.today.find_or_create_by(username: order_params[:username])
       order.update_attributes(cancelled_at: Time.now)
     end
   end
