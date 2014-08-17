@@ -6,9 +6,9 @@ class Hubot::OrdersController < ApplicationController
     # ISO 8601 format: YYYY-MM-DD
     # or shorthand today
     if date = ordered_on
-      render json: Order.ordered_on(date)
+      render json: Order.not_cancelled.ordered_on(date)
     else
-      render json: Order.all
+      render json: Order.not_cancelled
     end
   end
 
@@ -47,6 +47,7 @@ class Hubot::OrdersController < ApplicationController
   def create_order_with_username_metadata(username, metadata)
     order = Order.today.find_or_create_by(username: username)
     order.metadata = metadata
+    order.cancelled_at = nil
     order.save
   end
 
@@ -59,12 +60,12 @@ class Hubot::OrdersController < ApplicationController
   end
 
   def delete_all_orders_for_today
-    Order.today.destroy_all
+    Order.today.update_all(cancelled_at: Time.now)
   end
 
   def delete_order_with_username
     if order = Order.today.find_by(username: order_params[:username])
-      order.destroy
+      order.update_attributes(cancelled_at: Time.now)
     end
   end
 

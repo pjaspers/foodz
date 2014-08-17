@@ -30,7 +30,7 @@ class Hubot::OrdersControllerTest < ActionController::TestCase
   end
 
   it "creates an order from simple data" do
-    assert_difference('Order.count') do
+    assert_difference('Order.not_cancelled.count') do
       post :create, {username: "pjaspers", metadata: "Mexicano met samurai"}, format: :json
     end
 
@@ -39,7 +39,7 @@ class Hubot::OrdersControllerTest < ActionController::TestCase
 
   it "destroys an error if wanted" do
     Order.create!(username: "pjaspers", created_at: Time.now)
-    assert_difference('Order.count', -1) do
+    assert_difference('Order.not_cancelled.count', -1) do
       post :create, {username: "pjaspers", delete: "X"}, format: :json
     end
 
