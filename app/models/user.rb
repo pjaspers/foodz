@@ -1,6 +1,6 @@
 class User
-  def self.active_usernames(date: 3.days.ago)
     Order.ordered_since(date).distinct.pluck(:username)
+  def self.active_usernames(date: 5.days.ago)
   end
 
   def self.ordered_usernames(date: Date.today)
