@@ -7,5 +7,6 @@ class Order < ActiveRecord::Base
 
   scope :ordered_since, -> (date) { where("created_at >= ?", date.to_time.beginning_of_day) }
 
+  scope :not_cancelled, -> { where("cancelled_at IS NULL") }
 
 end

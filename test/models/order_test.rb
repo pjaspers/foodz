@@ -35,6 +35,14 @@ class OrderTest < ActiveSupport::TestCase
       assert Order.ordered_since(Date.new(2011, 11, 04)).include? o2
     end
 
+    it "can exclude canceled orders" do
+      o1 = Order.create({"metadata"=>"ne midden fitness dalton", "created_at"=>"2011-11-04T08:22:15Z", "username"=>"Piet Jaspers"})
+      o2 = Order.create({"metadata"=>"ne midden fitness dalton", "created_at"=>"2014-11-04T08:22:15Z", "username"=>"Piet Jaspers", "cancelled_at" => Time.now})
+
+      assert Order.not_cancelled.include? o1
+      assert !Order.not_cancelled.include?(o2)
+    end
+
   end
 
 end
