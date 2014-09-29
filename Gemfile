@@ -1,5 +1,5 @@
 source 'https://rubygems.org'
-ruby "2.0.0"
+ruby "2.1.2"
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 4.1.4'
@@ -27,6 +27,10 @@ gem 'unicorn', '~> 4.8.2'
 # Visual email testing
 # [mail_view](https://github.com/37signals/mail_view)
 gem 'mail_view', '~> 2.0.4'
+
+# Send your application errors to our hosted service and reclaim your i...
+# [airbrake](http://www.airbrake.io)
+gem 'airbrake', '~> 4.1.0'
 
 group :development, :test do
   gem 'spring', '~> 1.1.3'
